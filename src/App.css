@@ -1,0 +1,351 @@
+/* =========================================
+   1. GLOBAL RESET & LAYOUT
+   ========================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden; /* Prevents double scrollbars */
+  background-color: #f0fdf4;
+  color: #333;
+}
+
+/* Main Split Container */
+.split-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* =========================================
+   2. LEFT PANE (CAMERA)
+   ========================================= */
+.left-pane {
+  flex: 1; /* Takes up 60% of the screen */
+  background: black;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cam-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.fullscreen-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures video fills space without distortion */
+}
+
+/* Floating "Tap to Scan" Button */
+.btn-overlay {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  color: #15803d;
+  padding: 18px 40px;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transition: all 0.2s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-overlay:hover {
+  transform: translateX(-50%) scale(1.05);
+  background: #fff;
+}
+
+/* =========================================
+   3. RIGHT PANE (DASHBOARD)
+   ========================================= */
+.right-pane {
+  flex: 1; /* Takes up 40% of the screen */
+  background: #ffffff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allow scrolling for long content */
+  box-shadow: -5px 0 30px rgba(0,0,0,0.05);
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  justify-content: space-between; /* Logo Left, Score Right */
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 20px;
+}
+
+.logo {
+  color: #15803d;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Scoreboard Widget */
+.score-widget {
+  background: #15803d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-align: right;
+  box-shadow: 0 4px 10px rgba(21, 128, 61, 0.3);
+}
+
+.score-label {
+  display: block;
+  font-size: 0.7rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.score-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* =========================================
+   4. CONTENT STATES (Idle, Loading)
+   ========================================= */
+.content-area {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.placeholder-text {
+  text-align: center;
+  color: #a3a3a3;
+}
+
+.icon-large {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  display: block;
+  opacity: 0.5;
+}
+
+.loading-state {
+  text-align: center;
+  color: #15803d;
+  font-weight: bold;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #dcfce7;
+  border-top: 5px solid #15803d;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px auto;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* =========================================
+   5. RESULT CARD
+   ========================================= */
+.result-card {
+  animation: slideIn 0.4s ease-out;
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+@keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.category-tag {
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.result-card h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.reason-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+/* =========================================
+   6. INFO BOXES (Danger, Alternative)
+   ========================================= */
+
+/* Red Danger Box */
+.danger-box {
+  background: #fef2f2;
+  border-left: 5px solid #ef4444;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.danger-box strong {
+  color: #b91c1c;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.danger-box p {
+  color: #7f1d1d;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Yellow Smart Swap Box */
+.alt-box {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-left: 5px solid #eab308;
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 4px;
+}
+
+.alt-box strong {
+  font-size: 0.9rem;
+  color: #a16207;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.alt-box p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #854d0e;
+}
+
+/* =========================================
+   7. IMPACT STATS & BUTTONS
+   ========================================= */
+.impact-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.impact-badge {
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Green CO2 Badge */
+.impact-badge.co2 {
+  background: #dcfce7;
+  color: #14532d;
+  border: 1px solid #bbf7d0;
+}
+
+/* Blue Chemical Badge */
+.impact-badge.chemical {
+  background: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+}
+
+.btn-retake {
+  width: 100%;
+  padding: 18px;
+  background: #15803d;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-retake:hover {
+  background: #166534;
+}
+
+/* =========================================
+   8. COLOR THEMES & MOBILE
+   ========================================= */
+.recyclable .category-tag { background: #22c55e; }
+.compostable .category-tag { background: #eab308; }
+.landfill .category-tag { background: #64748b; }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .split-layout {
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling for the whole page */
+  }
+
+  .left-pane {
+    flex: none;
+    height: 50vh; /* Camera takes top half */
+    width: 100%;
+  }
+
+  .right-pane {
+    flex: none;
+    min-height: 60vh; /* Details take bottom half */
+    width: 100%;
+    padding: 25px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin-top: -20px; /* Slight overlap effect */
+    z-index: 5;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+  }
+
+  .btn-overlay {
+    bottom: 50px; /* Move button up slightly on mobile */
+  }
+}
